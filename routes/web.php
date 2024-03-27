@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Controller;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,4 +21,12 @@ Route::get('/register', function () {
 });
 Route::get('/forget', function () {
     return view('forget');
+});
+Route::post('loginPost',[Controller::class,'loginPost'])->name('loginPost');
+Route::get('login',[Controller::class,'login'])->name('login');
+
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('dashboard',[Controller::class,'dashboard'])->name('dashboard');
+    Route::get('logout',[Controller::class,'logout'])->name('logout');
+
 });

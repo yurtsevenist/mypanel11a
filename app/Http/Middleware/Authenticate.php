@@ -15,6 +15,7 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
+            toastr()->warning('Yetkiniz olmayan bir alana erişmeye çalışıyorsunuz Ip adresiniz kayıt altına alınmıştır','Uğurlama');
             return route('login');
         }
     }

@@ -22,11 +22,23 @@
       <a href="#" class="h1"><b>My</b>PANEL</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Burada hata mesajı görünecek...</p>
+      <p class="login-box-msg">        
+            @if (Session::has('fail'))
+                <div class="alert alert-danger" role="alert">
+                    {{ Session::get('fail') }}
+                </div>
+            @endif
+            @if (Session::has('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ Session::get('success') }}
+                </div>                
+            @endif
+      </p>
 
-      <form action="#" method="post">
+      <form action="{{route('loginPost')}}" method="post">
+        @csrf
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="E-Posta Adresiniz">
+          <input type="email" name="email" class="form-control" placeholder="E-Posta Adresiniz">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -34,7 +46,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Şifreniz">
+          <input type="password" name="password" class="form-control" placeholder="Şifreniz">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -44,7 +56,7 @@
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember">
+              <input type="checkbox" id="remember" name="remember">
               <label for="remember">
                 Beni hatırla
               </label>
