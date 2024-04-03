@@ -23,6 +23,7 @@ Route::get('/forget', function () {
     return view('forget');
 });
 Route::post('loginPost',[Controller::class,'loginPost'])->name('loginPost');
+Route::post('registerPost',[Controller::class,'registerPost'])->name('registerPost');
 Route::get('login',[Controller::class,'login'])->name('login');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
