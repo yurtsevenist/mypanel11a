@@ -60,4 +60,10 @@ class Controller extends BaseController
         return back()->withFail('Beklenmedik bir hata meydana geldi');
 
     }
+    public function modeswitch(Request $request)
+    {
+        $user = User::whereId(Auth::user()->id)->first();
+        $user->mode = $request->statu == "true" ? 1 : 0; 
+        $user->save();
+    }
 }

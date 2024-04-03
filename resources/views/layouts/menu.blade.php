@@ -1,9 +1,25 @@
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar @if(Auth::user()->mode==1) sidebar-dark-primary  @else sidebar-light-info  @endif elevation-4">
     <!-- Brand Logo -->
     <a href="{{route('dashboard')}}" class="brand-link">
-      <img src="{{asset('tema')}}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">My Panel</span>
+       <div class="row">
+        <div class="col-8">
+          <img src="{{asset('tema')}}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+          <span class="brand-text font-weight-light">My Panel</span>
+         
+        </div>
+        <div class="col-4">
+          <input  class="switchmode" id="switchmode" data-size="small" type="checkbox"
+          mode="{{Auth::user()->mode}}"
+          data-on="<i class='fas fa-moon ' aria-hidden='true'></i>"
+          data-onstyle="dark"
+          data-off="<i class='fas fa-sun ' aria-hidden='true'></i>"
+          data-offstyle="light" @if (Auth::user()->mode == 1)
+          checked
+         @endif
+            data-toggle="toggle">
+        </div>
+       </div>
     </a>
 
     <!-- Sidebar -->
@@ -45,6 +61,7 @@
               </p>
             </a>
           </li>
+      
           <li class="nav-item">
             <a href="{{route('logout')}}" class="nav-link">
               <i class="nav-icon fas fa-door-open"></i>

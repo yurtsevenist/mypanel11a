@@ -13,8 +13,9 @@
   <link rel="stylesheet" href="{{asset('tema')}}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('tema')}}/dist/css/adminlte.min.css">
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition @if(Auth::user()->mode==1) dark-mode @else light-mode @endif sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -23,7 +24,7 @@
   </div>
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-dark">
+  <nav id="navbar" class="main-header navbar navbar-expand  @if(Auth::user()->mode==1) navbar-dark @else navbar-light @endif">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">

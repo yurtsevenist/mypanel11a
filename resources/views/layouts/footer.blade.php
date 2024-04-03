@@ -38,6 +38,39 @@
 <script src="{{asset('tema')}}/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset('tema')}}/dist/js/pages/dashboard2.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+{{-- dark light mode change --}}
+<script>
+
+  $('.switchmode').change(function() {
+ opmode=window.matchMedia('(prefers-color-scheme: dark)').matches;//işletim sisteminin dark mode veya light mode olup olmadığına bakıyoruz
+ console.log(opmode) //true ise dark mode false ise light mode olduğunu anlıyoruz 
+ mode = $(this)[0].getAttribute('mode');
+ statu=$(this).prop('checked');
+ $.get("{{route('modeswitch')}}", {mode:mode,statu:statu}, function(data,status){
+   //  console.log(data);
+ });
+ if(statu==false)
+ {
+  $(document.body).removeClass('dark-mode');
+  $(document.body).addClass('light-mode');
+  $("nav").removeClass('navbar-dark');
+  $("nav").addClass('navbar-light');
+  $("aside").removeClass('sidebar-dark-primary');
+  $("aside").addClass('sidebar-light-info');
+ }
+ else
+ {
+  $(document.body).removeClass('ligth-mode');
+  $(document.body).addClass('dark-mode');
+  $("nav").removeClass('navbar-light');
+  $("nav").addClass('navbar-dark');
+  $("aside").removeClass('sidebar-light-info');
+  $("aside").addClass('sidebar-dark-primary');
+ }
+})
+</script>
+{{-- dark light mode change end --}}
 </body>
 </html>
 

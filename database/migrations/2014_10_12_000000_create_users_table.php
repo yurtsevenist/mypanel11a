@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->integer('mode')->default(1)->comment("1 ise dark mode 0 ise light mode");
         });
     }
 

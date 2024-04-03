@@ -29,5 +29,6 @@ Route::get('login',[Controller::class,'login'])->name('login');
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('dashboard',[Controller::class,'dashboard'])->name('dashboard');
     Route::get('logout',[Controller::class,'logout'])->name('logout');
+    Route::get('modeswitch', [Controller::class, 'modeswitch'])->name('modeswitch');
 
 });
