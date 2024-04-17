@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Blog;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterPostRequest;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +43,45 @@ class Controller extends BaseController
     {
         $blog=Blog::whereId($id)->first();
         return view('blogdetail',compact('blog'));
+    }
+    public function blogUpdate(Request $request)
+    {
+         try {
+            if ($request->hasFile('file')) {
+                //eğer resim dosyası değişmiş ise
+                $mimetype = $request->file->extension();
+                $newName = uniqid() . '.' . $mimetype;
+                $request->file->move('images', $newName);
+                $blog=Blog::whereId($request->id)->first();
+                try {
+                    unlink($blog->image);
+                } catch (\Throwable $th) {
+                   
+                }
+                $blog->image= 'images/'.$newName;                
+                $blog->title=$request->title;       
+                $blog->content=$request->content;
+                $blog->author=Auth::user()->name;
+                $blog->updated_at=Carbon::now();
+                $blog->save();
+            }
+            else
+            {
+                 //resim dosyası değişmemiş ise
+                $blog=Blog::whereId($request->id)->first();
+                $blog->title=$request->title;       
+                $blog->content=$request->content;
+                $blog->author=Auth::user()->name;
+                $blog->updated_at=Carbon::now();
+                $blog->save();
+            }
+           
+            toastr()->success('Blog yazınız güncellenmiştir','Başarılı');
+            return redirect()->back();
+         } catch (\Throwable $th) {
+            toastr()->error('Blog yazınız güncellenmiştir','Hata');
+            return redirect()->back();
+         }
     }
     public function blogDelete(Request $request)
     {

@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('blog',[Controller::class,'blog'])->name('blog');
     Route::get('blog/blogdetail/{id}',[Controller::class,'blogdetail'])->name('blogdetail');
     Route::post('blogDelete',[Controller::class,'blogDelete'])->name('blogDelete');
+    Route::post('blogUpdate',[Controller::class,'blogUpdate'])->name('blogUpdate');
     Route::get('logout',[Controller::class,'logout'])->name('logout');
     Route::get('modeswitch', [Controller::class, 'modeswitch'])->name('modeswitch');
 

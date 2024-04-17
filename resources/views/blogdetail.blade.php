@@ -24,22 +24,29 @@
 
     <!-- Main content -->
     <section class="content">
-      <form  method="POST" action="" enctype="multipart/form-data">
+      <form  method="POST" action="{{route('blogUpdate')}}" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="id" value="{{$blog->id}}">
        <div class="row">
-         <div class="col-md-6">
+         <div class="col-md-8 offset-md-2">
+          <div class="form-group text-center">
+          <img class="img-fluid text-center" src="{{asset($blog->image)}}"  alt="" srcset="">
+          </div>
+          <div class="form-group">
+            <label for="title">Yeni Resim Dosyası</label>
+          <input class="form-control" type="file" name="file">
+          </div>
           <div class="form-group">
             <label for="title">Blog Başlığı</label>
-          <input class="form-control" type="text" name=title" value="{{$blog->title}}"> 
+          <input class="form-control" type="text" name="title" value="{{$blog->title}}"> 
           </div>
           <div class="form-group">
             <label for="title">İçerik Metni</label>
-          <textarea id="summernote" class="form-control" rows="5" name=content">{{$blog->content}}</textarea>
+          <textarea id="summernote" class="form-control" rows="5" name="content">{{$blog->content}}</textarea>
           </div>
+           <button type="submit" class="btn btn-block btn-primary mt-2 mb-2">Güncelle</button>
          </div>
-        <div class="col-md-6 text-center">
-           <img src="{{$blog->image}}" width="90%" alt="" srcset="">
-        </div>
+       
        </div>
       </form>
     </section>
