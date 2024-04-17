@@ -72,6 +72,7 @@
 })
 </script>
 {{-- dark light mode change end --}}
+@yield('js')
 </body>
 </html>
 

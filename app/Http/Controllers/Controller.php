@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Blog;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterPostRequest;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +32,22 @@ class Controller extends BaseController
     public function dashboard()
     {
         return view('dashboard');
+    }
+    public function blog()
+    {
+        $blogs=Blog::orderBy('created_at','DESC')->get();
+        return view('blog',compact('blogs'));
+    }
+    public function blogdetail($id)
+    {
+        $blog=Blog::whereId($id)->first();
+        return view('blogdetail',compact('blog'));
+    }
+    public function blogDelete(Request $request)
+    {
+        $blog=Blog::whereId($request->id)->first();
+        $blog->delete();
+        return redirect()->back()->withSuccess('Blog Yazınız Siliniştir');
     }
     public function logout()
     {

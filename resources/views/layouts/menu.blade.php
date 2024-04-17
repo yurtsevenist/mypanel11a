@@ -11,9 +11,9 @@
         <div class="col-4 text-right">
           <input  class="switchmode" data-style="ios"   data-size="xs" type="checkbox"
           mode="{{Auth::user()->mode}}"
-          data-on="<i class='fas fa-moon' aria-hidden='true'></i>"
+          data-on="<i class='bi bi-moon' aria-hidden='true'></i>"
           data-onstyle="dark"
-          data-off="<i class='fas fa-sun' aria-hidden='true'></i>"
+          data-off="<i class='bi bi-brightness-high' aria-hidden='true'></i>"
           data-offstyle="light" @if (Auth::user()->mode == 1)
           checked
          @endif
@@ -53,7 +53,7 @@
                with font-awesome or any other icon font library -->
     
           <li class="nav-item">
-            <a href="{{route('dashboard')}}" class="nav-link">
+            <a href="{{route('dashboard')}}" class="nav-link @if(Request::segment(1)=='dashboard') active @endif">
               <i class="nav-icon fas fa-home"></i>
               <p>
                Anasayfa
@@ -61,7 +61,15 @@
               </p>
             </a>
           </li>
-        
+          <li class="nav-item">
+            <a href="{{route('blog')}}" class="nav-link @if(Request::segment(1)=='blog') active @endif">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Blog Yazıları
+                {{-- <span class="right badge badge-danger">New</span> --}}
+              </p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="{{route('logout')}}" class="nav-link">
               <i class="nav-icon fas fa-door-open"></i>
