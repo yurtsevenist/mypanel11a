@@ -71,6 +71,15 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{route('blogadd')}}" class="nav-link @if(Request::segment(1)=='blogadd') active @endif">
+              <i class="nav-icon fas fa-plus"></i>
+              <p>
+                Blog Ekle
+                {{-- <span class="right badge badge-danger">New</span> --}}
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{route('logout')}}" class="nav-link">
               <i class="nav-icon fas fa-door-open"></i>
               <p>

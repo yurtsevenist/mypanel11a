@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Blog;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\RegisterPostRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -99,6 +100,39 @@ class Controller extends BaseController
     {
         return view('login');
     }
+    public function blogadd()
+    {
+        return view('blogadd');
+    }
+    public function blogPost(Request $request)
+    {
+        try {
+            if ($request->hasFile('file')) {
+                //eğer resim dosyası değişmiş ise
+                $mimetype = $request->file->extension();
+                $newName = uniqid() . '.' . $mimetype;
+                $request->file->move('images', $newName);
+                $blog=new Blog;              
+                $blog->image= 'images/'.$newName;                
+                $blog->title=$request->title;       
+                $blog->content=$request->content;
+                $blog->author=Auth::user()->name;              
+                $blog->save();
+                toastr()->success('Blog yazınız güncellenmiştir','Başarılı');
+                return redirect()->route('blog');
+            }
+            else
+            {
+                toastr()->info('Eklenecek bir resim dosyası bulunamadı','Bilgilendirme');   
+                return redirect()->back();
+            }  
+           
+           
+         } catch (\Throwable $th) {
+            toastr()->error('Beklenmedik bir hata meydana geldi ','Hata');
+            return redirect()->back();
+         }
+    }
     public function registerPost(RegisterPostRequest $request)
     {
         //dd($request);
@@ -117,6 +151,87 @@ class Controller extends BaseController
         return back()->withFail('Beklenmedik bir hata meydana geldi');
 
     }
+    public function passwordReset(Request $request)
+    {
+         try {
+             
+            $email=User::whereEmail($request->email)->first();
+            if($email)
+            {
+                $token = Str::random(64);
+                $ara = DB::table('password_resets')
+                ->where(['email' => $request->email])
+                ->first();
+                if($ara)
+                {
+                    DB::table('password_resets')->update(
+                        ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
+                    );
+                }
+                else
+                {
+                    DB::table('password_resets')->insert(
+                        ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
+                    ); 
+                }             
+                
+                         
+                    $mail= Mail::send('verify', ['token' => $token], function($message) use($request){
+                    $message->from('bilgi@ihmtal.com', 'İhsan Mermerci M.T.A.L.');
+                    $message->to($request->email);
+                    $message->subject('Şifre Değiştirme Doğrulama');
+                   
+                });
+        
+            
+                    return redirect()->back()->withInfo('E-Posta Adresinize Link Gönderildi!');
+              
+               
+            }
+            else
+            {
+                return back()->withInfo('E-Posta adresiniz sistemde kayıtlı değil!'); 
+            }
+         } catch (\Throwable $th) {
+        //throw $th;
+             return back()->withFail('Beklenmedik bir hata meydana geldi');
+         }
+    }
+    public function getPassword($token) {
+
+        return view('reset', ['token' => $token]);
+     }
+     public function updatePassword(Request $request)
+     {
+
+     $request->validate([
+         'email' => 'required|email|exists:users',
+         'password' => 'required|string|min:6|confirmed',
+         'password_confirmation' => 'required',
+
+     ]);
+
+     $updatePassword = DB::table('password_resets')
+                         ->where(['email' => $request->email, 'token' => $request->token])
+                         ->first();
+
+     if(!$updatePassword)
+         return back()->withFail('Geçersiz Anahtar!');
+       $user = User::where('email', $request->email)
+                   ->update(['password' => Hash::make($request->password)]);
+
+       DB::table('password_resets')->where(['email'=> $request->email])->delete();
+
+
+                if( Auth::attempt(['email' => $request->email, 'password' =>$request->password]))
+                {
+                    toastr()->info('Şifreniz Güncellendi, Hoşgeldiniz '.Auth::user()->name,'Bilgilendirme');                   
+                    return redirect()->route('dashboard');    
+
+                }
+
+
+     }
     public function modeswitch(Request $request)
     {
         $user = User::whereId(Auth::user()->id)->first();

@@ -22,9 +22,13 @@
     </div>
     <div class="card-body">
       <p class="login-box-msg">Şifrenizi hatırlamıyorsanız e-posta adresinizi girerek yeni şifrenizi belirleyebiirsiniz.</p>
-      <form action="#" method="post">
+      <p class="login-box-msg">     
+        @include('hatakontrol') 
+    </p>
+      <form action="{{route('passwordReset')}}" method="post">
+        @csrf
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="E-Posta Adresiniz">
+          <input type="email" name="email" class="form-control" required placeholder="E-Posta Adresiniz">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>

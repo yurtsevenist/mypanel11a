@@ -25,10 +25,14 @@ Route::get('/forget', function () {
 Route::post('loginPost',[Controller::class,'loginPost'])->name('loginPost');
 Route::post('registerPost',[Controller::class,'registerPost'])->name('registerPost');
 Route::get('login',[Controller::class,'login'])->name('login');
-
+Route::post('passwordReset',[Controller::class,'passwordReset'])->name('passwordReset');
+Route::get('/{token}/reset-password', [Controller::class, 'getPassword'])->name('getPassword');
+Route::post('/reset-password', [Controller::class, 'updatePassword'])->name('updatePassword');
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('dashboard',[Controller::class,'dashboard'])->name('dashboard');
     Route::get('blog',[Controller::class,'blog'])->name('blog');
+    Route::get('blogadd',[Controller::class,'blogadd'])->name('blogadd');
+    Route::post('blogPost',[Controller::class,'blogPost'])->name('blogPost');
     Route::get('blog/blogdetail/{id}',[Controller::class,'blogdetail'])->name('blogdetail');
     Route::post('blogDelete',[Controller::class,'blogDelete'])->name('blogDelete');
     Route::post('blogUpdate',[Controller::class,'blogUpdate'])->name('blogUpdate');
